@@ -123,7 +123,7 @@ def main():
         sys.exit(0)
 
     line = line.strip()
-    regexp=re.compile("^#(?P<channel>[^\s]+):\s*\s*(?P<sender>[^\s]*)\s*(?P<message>.*)$")
+    regexp = re.compile("^(?P<channel>#([^\s]+){0,}):\s*\s*(?P<sender>[^\s]*)\s*(?P<message>.*)$")
     match = regexp.match(line)
 
     if line.startswith("Private message from "):
