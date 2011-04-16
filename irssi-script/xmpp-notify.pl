@@ -14,7 +14,7 @@ $VERSION = "0.01";
 %IRSSI = (
     authors     => 'Chmouel Boudjnah',
     contact     => 'chmouel@chmouel.com',
-    name        => 'xnmpp-notify',
+    name        => 'xmpp-notify',
     description => 'Use XMPP to alert user to hilighted messages',
     license     => 'GNU General Public License'
 );
@@ -43,6 +43,8 @@ sub print_text_notify {
     my $server = $dest->{server};
 
     return if (!$server || !($dest->{level} & MSGLEVEL_HILIGHT));
+    return if (!$server->{usermode_away});
+
     my $sender = $stripped;
     $sender =~ s/^\<.([^\>]+)\>.+/\1/ ;
     $stripped =~ s/^\<.[^\>]+\>.// ;
@@ -54,6 +56,8 @@ sub message_private_notify {
     my ($server, $msg, $nick, $address) = @_;
 
     return if (!$server);
+    return if (!$server->{usermode_away});
+
     notify($server, "Private message from ".$nick, $msg);
 }
 
@@ -62,6 +66,8 @@ sub dcc_request_notify {
     my $server = $dcc->{server};
 
     return if (!$dcc);
+    return if (!$server->{usermode_away});
+
     notify($server, "DCC ".$dcc->{type}." request", $dcc->{nick});
 }
 
