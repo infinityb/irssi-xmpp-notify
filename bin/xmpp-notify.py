@@ -129,10 +129,13 @@ def main():
     if line.startswith("Private message from "):
         msg = line.replace("Private message from ", "")
     elif match:
-        msg=match.group("message")
+        msg = match.group("message")
         if config['mynickname'] and msg.startswith("%s: " % (config['mynickname'])):
             msg = msg.replace("%s: " % (config['mynickname']), "")
-        msg = "%s: %s" % (match.group('sender'), msg)
+        if 'channel' in match.groupdict() and match.group('channel'):
+            msg = "%s/%s: %s" % (match.group('sender'), match.group('channel'), msg)
+        else:
+            msg = "%s: %s" % (match.group('sender'), msg)
     else:
         print "No match on: %s" % line
         sys.exit(0)
